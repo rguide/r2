@@ -10,5 +10,5 @@ install.packages(c("splines","survival","concordance"))
 install.packages(c("foreign","rpart","partykit","rpart.plot","rattle","RColorBrewer"))
 
 # Analýza - Jiří
-install.packages("genasis","mblm","xlsx")
+install.packages(c("genasis","mblm","xlsx"))
 
