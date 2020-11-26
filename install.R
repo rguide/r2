@@ -1,3 +1,14 @@
-install.packages("tidyverse")
-install.packages("rjson")
-install.packages("genasis")
+setRepositories(ind=1:8)
+
+# Cluster analýza - Ivana
+install.packages(c("ALL","cluster","ConsensusClusterPlus","dynamicTreeCut"))
+
+# Analýza přežití - Renča
+install.packages(c("splines","survival","concordance"))
+
+# Analýza přežití - Renča
+install.packages(c("foreign","rpart","partykit","rpart.plot","rattle","RColorBrewer"))
+
+# Analýza - Jiří
+install.packages("genasis","mblm","xlsx")
+
