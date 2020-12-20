@@ -1,7 +1,7 @@
 setRepositories(ind=1:8)
 
 # Cluster analýza - Ivana
-install.packages(c("ALL","cluster","ConsensusClusterPlus","dynamicTreeCut"))
+install.packages(c("ALL","cluster","ConsensusClusterPlus","dynamicTreeCut","preprocessCore"))
 
 # Analýza přežití - Renča
 install.packages(c("splines","survival","concordance"))
