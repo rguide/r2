@@ -1,6 +1,5 @@
-FROM rocker/r-ver:4.0.0
 RUN pip install --no-cache-dir notebook==5.*
-
+FROM rocker/r-ver:4.0.0
 ARG NB_USER=jovyan
 ARG NB_UID=1000
 ENV USER ${NB_USER}
