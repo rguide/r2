@@ -22,10 +22,4 @@ RUN apt-get update && \
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
 RUN export JAVA_HOME
 
-# Install R 
-COPY runtime.txt ./
-RUN pip install --no-cache-dir -r runtime.txt
-
-# Install R 
-COPY install.R ./
-RUN Rscript -e install.R
+RUN Rscript -e "install.packages('mblm')"
