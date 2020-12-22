@@ -1,13 +1,7 @@
-FROM iron/python:2.7
-WORKDIR /app
-ADD . /app
-RUN set -xe \
-    && apt add update \
-    && apt add install python-pip
-RUN pip install --upgrade pip
-RUN pip install -r ./requirements.txt
-
-RUN pip install --no-cache-dir notebook==5.*
+FROM python:3.7-slim
+# install the notebook package
+RUN pip install --no-cache --upgrade pip && \
+    pip install --no-cache notebook==5.*
 
 ARG NB_USER=jovyan
 ARG NB_UID=1000
@@ -26,5 +20,5 @@ USER root
 RUN chown -R ${NB_UID} ${HOME}
 USER ${NB_USER}
 
-FROM rocker/r-ver:4.0.0
+FROM rocker/r-ver:4.0.3:51c4571a2458
 RUN Rscript -e "install.packages('mblm')"
