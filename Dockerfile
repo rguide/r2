@@ -1,4 +1,4 @@
-FROM rocker/geospatial:3.6.3
+FROM rocker/r-ver:51c4571a2458
 
 ENV NB_USER rstudio
 ENV NB_UID 1000
@@ -30,12 +30,13 @@ RUN mkdir -p ${VENV_DIR} && chown -R ${NB_USER} ${VENV_DIR}
 USER ${NB_USER}
 RUN python3 -m venv ${VENV_DIR} && \
     # Explicitly install a new enough version of pip
-    pip3 install pip==9.0.1 && \
+    pip3 install pip==20.3.3 && \
     pip3 install --no-cache-dir \
          jupyter-rsession-proxy
+         
+RUN apt-get update && \
+    apt-get install -y openjdk-11-jdk && \
+    apt-get install -y liblzma-dev && \
+    apt-get install -y libbz2-dev
 
-RUN R --quiet -e "devtools::install_github('IRkernel/IRkernel')" && \
-    R --quiet -e "IRkernel::installspec(prefix='${VENV_DIR}')"
-
-
-CMD jupyter notebook --ip 0.0.0.0
+RUN if [ -f install.R ]; then R --quiet -f install.R; fi
