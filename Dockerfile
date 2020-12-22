@@ -1,4 +1,4 @@
-FROM rocker/tidyverse:4.0.0
+FROM rocker/tidyverse:3.6.3
 
 ENV NB_USER rstudio
 ENV NB_UID 1000
@@ -22,6 +22,14 @@ RUN apt-get update && \
     apt-get purge && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+    
+RUN apt-get update && \
+    apt-get -y install openjdk-11-jdk && \
+    apt-get -y install liblzma-dev && \
+    apt-get -y install libbz2-dev
+    apt-get purge && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Create a venv dir owned by unprivileged user & set up notebook in it
 # This allows non-root to install python libraries if required
@@ -33,10 +41,6 @@ RUN python3 -m venv ${VENV_DIR} && \
     pip3 install pip==20.3.3 && \
     pip3 install --no-cache-dir \
          jupyter-rsession-proxy
-         
-RUN apt-get update && \
-    apt-get install -y openjdk-11-jdk && \
-    apt-get install -y liblzma-dev && \
-    apt-get install -y libbz2-dev
-
+   
 RUN if [ -f install.R ]; then R --quiet -f install.R; fi
+
