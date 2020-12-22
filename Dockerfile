@@ -27,9 +27,6 @@ RUN apt-get update && \
     apt-get -y install openjdk-11-jdk && \
     apt-get -y install liblzma-dev && \
     apt-get -y install libbz2-dev
-    apt-get purge && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
 
 # Create a venv dir owned by unprivileged user & set up notebook in it
 # This allows non-root to install python libraries if required
