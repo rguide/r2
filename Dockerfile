@@ -28,6 +28,8 @@ RUN apt-get update && \
     apt-get -y install liblzma-dev && \
     apt-get -y install libbz2-dev
 
+RUN Rscript -e "install.packages('xlsx')"
+
 # Create a venv dir owned by unprivileged user & set up notebook in it
 # This allows non-root to install python libraries if required
 RUN mkdir -p ${VENV_DIR} && chown -R ${NB_USER} ${VENV_DIR}
