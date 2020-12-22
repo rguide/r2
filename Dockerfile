@@ -20,5 +20,5 @@ USER root
 RUN chown -R ${NB_UID} ${HOME}
 USER ${NB_USER}
 
-FROM rocker/r-ver:4.0.3:51c4571a2458
+FROM rocker/r-ver:4.0.3
 RUN Rscript -e "install.packages('mblm')"
