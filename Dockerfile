@@ -2,8 +2,8 @@ FROM iron/python:2.7
 WORKDIR /app
 ADD . /app
 RUN set -xe \
-    && apt-get update \
-    && apt-get install python-pip
+    && apt add update \
+    && apt add install python-pip
 RUN pip install --upgrade pip
 RUN pip install -r ./requirements.txt
 
