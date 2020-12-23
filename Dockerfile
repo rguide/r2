@@ -20,10 +20,6 @@ RUN apt-get update && \
 
 RUN Rscript -e "install.packages('xlsx')"
 
-# Create a venv dir owned by unprivileged user & set up notebook in it
-# This allows non-root to install python libraries if required
-RUN mkdir -p ${VENV_DIR} && chown -R ${NB_USER} ${VENV_DIR}
-
 USER ${NB_USER}
 RUN python3 -m venv ${VENV_DIR} && \
     # Explicitly install a new enough version of pip
@@ -31,5 +27,4 @@ RUN python3 -m venv ${VENV_DIR} && \
     pip3 install --no-cache-dir \
          jupyter-rsession-proxy
    
-RUN if [ -f install.R ]; then R --quiet -f install.R; fi
 
