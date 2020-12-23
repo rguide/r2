@@ -21,7 +21,7 @@ RUN apt-get update && \
 RUN Rscript -e "install.packages('xlsx')"
 
 USER ${NB_USER}
-RUN python3 -m venv ${VENV_DIR} && \
+RUN python3 -m && \
     # Explicitly install a new enough version of pip
     pip3 install pip==20.3.3 && \
     pip3 install --no-cache-dir \
