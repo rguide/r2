@@ -1,21 +1,44 @@
-FROM rocker/binder:4.0.3
+FROM rocker/verse:3.6.3
 
-## Declares build arguments
-ARG NB_USER
-ARG NB_UID
+ENV NB_USER rstudio
+ENV NB_UID 1000
+ENV VENV_DIR /srv/venv
 
-## Copies your repo files into the Docker Container
+# Set ENV for all programs...
+ENV PATH ${VENV_DIR}/bin:$PATH
+# And set ENV for R! It doesn't read from the environment...
+RUN echo "PATH=${PATH}" >> /usr/local/lib/R/etc/Renviron
+RUN echo "export PATH=${PATH}" >> ${HOME}/.profile
+
+# The `rsession` binary that is called by nbrsessionproxy to start R doesn't seem to start
+# without this being explicitly set
+ENV LD_LIBRARY_PATH /usr/local/lib/R/lib
+
+ENV HOME /home/${NB_USER}
+WORKDIR ${HOME}
+
+RUN apt-get update && \
+    apt-get -y install python3-venv python3-dev && \
+    apt-get purge && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+    
+RUN apt-get update && \
+    apt-get -y install openjdk-11-jdk && \
+    apt-get -y install liblzma-dev && \
+    apt-get -y install libbz2-dev
+
+RUN Rscript -e "install.packages('xlsx')"
+
 USER root
 COPY . ${HOME}
-## Enable this to copy files from the binder subdirectory
-## to the home, overriding any existing files.
-## Useful to create a setup on binder that is different from a
-## clone of your repository
-## COPY binder ${HOME}
 RUN chown -R ${NB_USER} ${HOME}
 
-## Become normal user again
 USER ${NB_USER}
+RUN python3 -m && \
+    # Explicitly install a new enough version of pip
+    pip3 install pip==20.3.3 && \
+    pip3 install --no-cache-dir \
+         jupyter-rsession-proxy
+   
 
-## Run an install.R script, if it exists.
-RUN if [ -f install.R ]; then R --quiet -f install.R; fi
