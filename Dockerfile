@@ -1,30 +1,21 @@
-FROM rocker/r-base:4.0.3
+FROM rocker/binder:4.0.3
 
-ENV NB_USER rstudio
-ENV NB_UID 1000
-ENV VENV_DIR /srv/venv
+## Declares build arguments
+ARG NB_USER
+ARG NB_UID
 
-ENV HOME /home/${NB_USER}
-WORKDIR ${HOME}
+## Copies your repo files into the Docker Container
+USER root
+COPY . ${HOME}
+## Enable this to copy files from the binder subdirectory
+## to the home, overriding any existing files.
+## Useful to create a setup on binder that is different from a
+## clone of your repository
+## COPY binder ${HOME}
+RUN chown -R ${NB_USER} ${HOME}
 
-RUN apt-get update && \
-    apt-get -y install python3-venv python3-dev && \
-    apt-get purge && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-    
-RUN apt-get update && \
-    apt-get -y install openjdk-11-jdk && \
-    apt-get -y install liblzma-dev && \
-    apt-get -y install libbz2-dev
-
-RUN Rscript -e "install.packages('xlsx')"
-
+## Become normal user again
 USER ${NB_USER}
-RUN python3 -m && \
-    # Explicitly install a new enough version of pip
-    pip3 install pip==20.3.3 && \
-    pip3 install --no-cache-dir \
-         jupyter-rsession-proxy
-   
 
+## Run an install.R script, if it exists.
+RUN if [ -f install.R ]; then R --quiet -f install.R; fi
