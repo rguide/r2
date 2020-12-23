@@ -30,12 +30,16 @@ RUN apt-get update && \
 
 RUN Rscript -e "install.packages('xlsx')"
 
+# Create a venv dir owned by unprivileged user & set up notebook in it
+# This allows non-root to install python libraries if required
+RUN mkdir -p ${VENV_DIR} && chown -R ${NB_USER} ${VENV_DIR}
+
 USER root
 COPY . ${HOME}
 RUN chown -R ${NB_USER} ${HOME}
 
 USER ${NB_USER}
-RUN python3 -m && \
+RUN python3 -m venv ${VENV_DIR} && \
     # Explicitly install a new enough version of pip
     pip3 install pip==20.3.3 && \
     pip3 install --no-cache-dir \
