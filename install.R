@@ -12,3 +12,8 @@ install.packages(c("foreign","rpart","partykit","rpart.plot","rattle","RColorBre
 # Analýza - Jiří
 install.packages(c("genasis","mblm","xlsx"))
 
+# Analýzagenomických dat - Ivana
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("hgu95av2cdf","affy")
