@@ -16,4 +16,5 @@ install.packages(c("genasis","mblm","xlsx"))
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 
-BiocManager::install("hgu95av2cdf","affy")
+BiocManager::install("hgu95av2cdf")
+BiocManager::install("affy")
